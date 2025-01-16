@@ -2,15 +2,17 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class StoreUserRequest extends FormRequest
+class UpdateDoctorRequest extends StoreDoctorRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
+        // Or we are an admin, Or the currently logged in user
+        if (parent::authorize() || $this->user()->Id === $this->route('doctor')->Id) {
+            return true;
+        }
         return false;
     }
 
@@ -21,8 +23,10 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $rules = parent::rules();
+
+        $rules['Id'] = ['required', 'integer', 'exists:doctors,Id'];
+
+        return $rules;
     }
 }

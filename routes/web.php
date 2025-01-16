@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/doctor/create', [\App\Http\Controllers\DoctorController::class, 'create']);
 
-Route::inertia('/user/create', 'User/Create');
+Route::inertia('/login', 'Authentication/Login');
